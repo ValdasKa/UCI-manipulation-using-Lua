@@ -2,12 +2,14 @@ main_menu = {}
 local main_module = require("main_module")
 
 function main_menu.ConfigFile()
-  print("Config files")
+  print("Select config file from below in number")
+  print("---------------------------------------------")
   local file_list = main_module.scandir("/etc/config")
   local inp, opt = nil, {}
+
   for index, value in ipairs(file_list) do
     opt[tostring(index)] = value
-    print(string.format(value))
+    print(string.format("%d : %s",index, value))
   end
   repeat inp = io.read() until opt[inp]
   if inp == "x" then return opt[inp]() end
