@@ -6,6 +6,9 @@ function uci_main_menu.Section()
   local inp, opt, i = nil, {}, 0
   print("-----------------------------------------------------")
   local status , value = pcall(x.get_all, x, config)
+  if not status then 
+    print("Error " .. value .. " with Section") 
+  end
   for _, index in pairs(value) do
     i = i + 1
     opt[tostring(i)] = index[".name"]
@@ -13,7 +16,9 @@ function uci_main_menu.Section()
   end
   print("take section")
   repeat inp = io.read() until opt[inp]
-  if inp == "x" then return opt[inp]() end
+  if inp == "x" then
+    return opt[inp]()
+  end
   return opt[inp]
 end
 
@@ -27,8 +32,10 @@ return section, type
 end
 
 function uci_main_menu.Option()
+  print("Select which option to want add")
   local inp, opt, i = nil, {}, 0
   local status, value = pcall(x.get_all, x, config)
+  if not status then print("Error " .. value .. " with Option") end
   for key, val in pairs(value) do
     i = i + 1
     opt[tostring(i)] = key
@@ -48,6 +55,7 @@ function uci_main_menu.OptionInput(option, newvalue)
   local status, value = pcall(x.get_all, x, config, option)
   if not status or newvalue then value = {} end
   local inp
+  print("Write what you want add if done enter empty text")
   repeat inp = io.read()
     if(inp ~= "") then
     table.insert(value, inp)
@@ -74,7 +82,7 @@ function uci_main_menu.UCIMainMenu()
   print("[x] exit")
 
   return handleInput{
-    ["1"] = uci_print.PrintFileNames,
+    ["1"] =  uci_print.PrintFileNames,
     ["2"] = function() uci_print.PrintConfigFile(config) end,
     ["3"] = function() uci_print.PrintConfigSection(config, uci_main_menu.Section()) end,
     ["4"] = function() local section, type = uci_main_menu.SectionInput()
