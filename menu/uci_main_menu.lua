@@ -1,5 +1,5 @@
 uci_main_menu = {}
-local uci_print = require("uci_print")
+local uci_print = require("module.uci_print")
 local config
 
 function uci_main_menu.Section()

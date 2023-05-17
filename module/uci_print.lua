@@ -1,6 +1,4 @@
 uci_print = {}
--- require("uci")
--- x = uci.cursor()
 
 function uci_print.ScanDirectory(directory)
     directory = directory or ''
@@ -45,7 +43,7 @@ function uci_print.PrintFileNames()
 end
 
 function uci_print.PrintConfigFile(config)
-    local status, value = pcall(x.get_all, x, config) --prabandyti cursor():get_all(config)
+    local status, value = pcall(x.get_all, x, config)
     if not status then print("Error " .. value .. "  with PrintConfigFile") return uci_main_menu.UCIMainMenu() end
     for _, valu in pairs(value) do
                 print("----------------------")

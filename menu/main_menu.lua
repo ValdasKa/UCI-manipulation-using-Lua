@@ -1,5 +1,5 @@
 main_menu = {}
-local main_module = require("main_module")
+local main_module = require("module.main_module")
 
 function main_menu.ConfigFile()
   print("Select config file from below in number")
@@ -15,7 +15,7 @@ function main_menu.ConfigFile()
   if inp == "x" then return opt[inp]() end
   return opt[inp]
 end
-  -- main_menu.ConfigFile()
+
 function handleInput(options)
     local input
    repeat input = io.read() until options[input]
@@ -27,16 +27,12 @@ function main_menu.MainMenu()
   
     print("Main menu")
     print("[1] Move to UCI functions menu")
-    -- print("[2] Print config files")
     print("[x] exit")
     
     return handleInput{
-      ["1"] = function() main_module.UCIFunctionsMenu(main_menu.ConfigFile()) end,--(tostring(main_module.ScanDirectory("/etc/config"))) end,
-      -- ["2"] = function () main_menu.ConfigFile() end,
+      ["1"] = function() main_module.UCIFunctionsMenu(main_menu.ConfigFile()) end,
       ["x"] = os.exit,
     }
   end
---   main_menu.MainMenu()
-
 
 return main_menu

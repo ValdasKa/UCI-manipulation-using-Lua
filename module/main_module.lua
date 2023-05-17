@@ -1,5 +1,5 @@
 main_module = {}
-local uci_main_menu = require("uci_main_menu")
+local uci_main_menu = require("menu.uci_main_menu")
 
 function main_module.scandir(directory)
     local i, t, popen = 0, {}, io.popen
