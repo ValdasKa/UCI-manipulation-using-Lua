@@ -47,13 +47,7 @@ end
 function uci_print.PrintConfigFile(config)
     local status, value = pcall(x.get_all, x, config) --prabandyti cursor():get_all(config)
     if not status then print("Error " .. value .. "  with PrintConfigFile") return uci_main_menu.UCIMainMenu() end
-    
-    -- print("status",status)
-    -- print("value",value)
-    -- print("config",config)
-    
     for _, valu in pairs(value) do
-            --finish print code
             for _, valu in pairs(value) do
                 print("----------------------")
                     for key, val in pairs(valu) do
@@ -70,7 +64,7 @@ function uci_print.PrintConfigFile(config)
         return uci_main_menu.UCIMainMenu()
 end
 function uci_print.PrintConfigSection(config, section)
-    for key, value in pairs(x.get_all(config, section)) do
+    for key, value in pairs(x:get_all(config, section)) do
         if(type(value) == "table")then
             for _,val in pairs(value) do print(key, val)   end
             else
@@ -80,6 +74,7 @@ function uci_print.PrintConfigSection(config, section)
     return uci_main_menu.UCIMainMenu()
 end
 function uci_print.CreateNewSection(section, type, config)
+    print(section, type)
     if section ~= "" then
     x:set(config, section, type)
     else
