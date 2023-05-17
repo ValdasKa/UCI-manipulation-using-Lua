@@ -70,6 +70,7 @@ function uci_main_menu.UCIMainMenu()
   print("[5] Delete a section in the configuration file")
   print("[6] Set a value for an option")
   print("[7] Delete an option")
+  print("[8] Commit changes")
   print("[x] exit")
 
   return handleInput{
@@ -82,6 +83,9 @@ function uci_main_menu.UCIMainMenu()
     ["6"] = function() local option, value = uci_main_menu.OptionInput(uci_main_menu.Option())
     uci_print.SetValueForOptions(config, uci_main_menu.Section(), option, value) end,
     ["7"] = function() uci_print.DeleteOptions(config, uci_main_menu.Section(), uci_main_menu.Option()) end,
+    ["8"] = function() local status, value = pcall(x.commit, config)
+    if not status then print("error" .. value .. " with commit") end
+    return uci_main_menu.UCIMainMenu() end,
     ["x"] = os.exit,
   }
 end
