@@ -23,12 +23,12 @@ function uci_main_menu.Section()
 end
 
 function uci_main_menu.SectionInput()
-local section, type
-print("add section name")
-repeat section = io.read() until section
-print("add type")
-repeat type = io.read() until type ~= ""
-return section, type
+  local section, type
+  print("add section name")
+  repeat section = io.read() until section
+  print("add type")
+  repeat type = io.read() until type ~= ""
+  return section, type
 end
 
 function uci_main_menu.Option()
@@ -40,9 +40,9 @@ function uci_main_menu.Option()
     i = i + 1
     opt[tostring(i)] = key
     if type(val) == "table" then
-      print(i, key)
+      print(string.format("%d : %s",i, key))
     else
-      print(i, key, val)
+      print(i, key, tostring(val))
     end
   end
   
@@ -55,7 +55,7 @@ function uci_main_menu.OptionInput(option, newvalue)
   local status, value = pcall(x.get_all, x, config, option)
   if not status or newvalue then value = {} end
   local inp
-  print("Write what you want add if done enter empty text")
+  print("Write info that you want add if done enter empty text")
   repeat inp = io.read()
     if(inp ~= "") then
     table.insert(value, inp)
@@ -79,29 +79,30 @@ function uci_main_menu.UCIMainMenu()
   print("[6] Set a value for an option")
   print("[7] Delete an option")
   print("[8] Commit changes")
-  print("[x] exit")
-
+  print("[x] Return to main menu")
+  io.write("Select: ")
   return handleInput{
-    ["1"] =  uci_print.PrintFileNames,
-    ["2"] = function() uci_print.PrintConfigFile(config) end,
-    ["3"] = function() uci_print.PrintConfigSection(config, uci_main_menu.Section()) end,
+    ["1"] = function() uci_print.PrintFileNames() return uci_main_menu.UCIMainMenu() end,
+    ["2"] = function() uci_print.PrintConfigFile(config) return uci_main_menu.UCIMainMenu() end,
+    ["3"] = function() uci_print.PrintConfigSection(config, uci_main_menu.Section()) return uci_main_menu.UCIMainMenu() end,
     ["4"] = function() local section, type = uci_main_menu.SectionInput()
-      uci_print.CreateNewSection(section, type, config)  end,
-    ["5"] = function() uci_print.DeleteSection(uci_main_menu.Section(), config) end,
+    uci_print.CreateNewSection(section, type, config) return uci_main_menu.UCIMainMenu() end,
+    ["5"] = function() uci_print.DeleteSection(uci_main_menu.Section(), config) return uci_main_menu.UCIMainMenu() end,
     ["6"] = function() local option, value = uci_main_menu.OptionInput(uci_main_menu.Option())
-    uci_print.SetValueForOptions(config, uci_main_menu.Section(), option, value) end,
-    ["7"] = function() uci_print.DeleteOptions(config, uci_main_menu.Section(), uci_main_menu.Option()) end,
+    uci_print.SetValueForOptions(config, uci_main_menu.Section(), option, value) return uci_main_menu.UCIMainMenu() end,
+    ["7"] = function() uci_print.DeleteOptions(config, uci_main_menu.Section(), uci_main_menu.Option()) return uci_main_menu.UCIMainMenu() end,
     ["8"] = function() local status, value = pcall(x.commit, config)
     if not status then print("error" .. value .. " with commit") end
     return uci_main_menu.UCIMainMenu() end,
-    ["x"] = os.exit,
+    ["x"] = function () main_menu.MainMenu() end,
   }
 end
 
 function handleInput(options)
   local input
- repeat input = io.read() until options[input]
- return options[input]()
+  repeat input = io.read()
+  until options[input]
+  return options[input]()
 end
 
 function uci_main_menu.SwapToUCIMenu(configdir)

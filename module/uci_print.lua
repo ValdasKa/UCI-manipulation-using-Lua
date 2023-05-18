@@ -10,7 +10,6 @@ function uci_print.PrintFileNames()
     for index, value in ipairs(main_module.scandir("/etc/config")) do
         print(string.format("[%d] %s",index, value))
     end
-    return uci_main_menu.UCIMainMenu()
 end
 
 function uci_print.PrintConfigFile(config)
@@ -38,7 +37,6 @@ function uci_print.PrintConfigSection(config, section)
                 print(key, value)
         end
     end
-    return uci_main_menu.UCIMainMenu()
 end
 
 function uci_print.CreateNewSection(section, type, config)
@@ -48,20 +46,15 @@ function uci_print.CreateNewSection(section, type, config)
     else
         x:add(config, type)
     end
-    return uci_main_menu.UCIMainMenu()
 end
 function uci_print.DeleteSection(section, config)
     x:delete(config, section)
     print("Section deleted")
-    return uci_main_menu.UCIMainMenu()
 end
 function uci_print.SetValueForOptions(config, section, option, value)
     x:set(config, section, option, value)
-    return uci_main_menu.UCIMainMenu()
 end
 function uci_print.DeleteOptions(config, section, option)
     x:delete(config, section, option)
-    return uci_main_menu.UCIMainMenu()
 end
-
 return uci_print
