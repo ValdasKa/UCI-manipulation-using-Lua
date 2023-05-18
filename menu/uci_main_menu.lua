@@ -32,7 +32,7 @@ function uci_main_menu.SectionInput()
 end
 
 function uci_main_menu.Option()
-  print("Select which option to want add")
+  print("Select which option type want add")
   local inp, opt, i = nil, {}, 0
   local status, value = pcall(x.get_all, x, config)
   if not status then print("Error " .. value .. " with Option") end
