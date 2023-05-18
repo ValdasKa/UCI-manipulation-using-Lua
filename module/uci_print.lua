@@ -57,4 +57,5 @@ end
 function uci_print.DeleteOptions(config, section, option)
     x:delete(config, section, option)
 end
+
 return uci_print

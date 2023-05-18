@@ -80,7 +80,6 @@ function uci_main_menu.UCIMainMenu()
   print("[7] Delete an option")
   print("[8] Commit changes")
   print("[x] Return to main menu")
-  io.write("Select: ")
   return handleInput{
     ["1"] = function() uci_print.PrintFileNames() return uci_main_menu.UCIMainMenu() end,
     ["2"] = function() uci_print.PrintConfigFile(config) return uci_main_menu.UCIMainMenu() end,
@@ -94,15 +93,24 @@ function uci_main_menu.UCIMainMenu()
     ["8"] = function() local status, value = pcall(x.commit, config)
     if not status then print("error" .. value .. " with commit") end
     return uci_main_menu.UCIMainMenu() end,
-    ["x"] = function () main_menu.MainMenu() end,
+    ["x"] = function() main_menu.MainMenu() end,
   }
 end
 
 function handleInput(options)
-  local input
-  repeat input = io.read()
-  until options[input]
-  return options[input]()
+  local line = ""
+  while line == ("" or nil) do
+    io.stdout:write("Enter your option: ")
+     line = io.read("*l") 
+     if line == ("" or nil) then
+        print("You entered an empty line. Please try again")
+       end 
+     end 
+     if options[line] == nil then
+      print("Not existing value " .. line .. " use from above listed")
+      os.exit()
+     end
+  return options[line]()
 end
 
 function uci_main_menu.SwapToUCIMenu(configdir)

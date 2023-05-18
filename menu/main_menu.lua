@@ -16,11 +16,20 @@ function main_menu.ConfigFile()
   return opt[inp]
 end
 
-function handleInput(options)
-    local input
-   repeat input = io.read() until options[input]
- 
-   return options[input]()
+local function handleInputt(options)
+  local line = ""
+  while line == ("" or nil) do
+    io.stdout:write("Enter your option: ")
+     line = io.read("*l") 
+     if line == ("" or nil) then
+        print("You entered an empty line. Please try again")
+       end 
+     end 
+     if options[line] == nil then
+      print("Not existing value " .. line .. " use from above listed")
+      os.exit()
+     end
+  return options[line]()
 end
 
 function main_menu.MainMenu()
@@ -28,8 +37,7 @@ function main_menu.MainMenu()
     print("Main menu")
     print("[1] Move to UCI functions menu")
     print("[x] exit")
-    
-    return handleInput{
+    return handleInputt{
       ["1"] = function() main_module.UCIFunctionsMenu(main_menu.ConfigFile()) end,
       ["x"] = os.exit,
     }
