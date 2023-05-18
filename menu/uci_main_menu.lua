@@ -63,6 +63,13 @@ function uci_main_menu.OptionInput(option, newvalue)
   until inp == ""
   return option, value
 end
+function uci_main_menu.OptionType()
+  local input
+  print("Enter option type")
+  repeat input = io.read()
+  until input ~= ""
+  return uci_main_menu.OptionInput(input, true)
+end
 
 
 function uci_main_menu.UCIMainMenu()
@@ -87,7 +94,7 @@ function uci_main_menu.UCIMainMenu()
     ["4"] = function() local section, type = uci_main_menu.SectionInput()
     uci_print.CreateNewSection(section, type, config) return uci_main_menu.UCIMainMenu() end,
     ["5"] = function() uci_print.DeleteSection(uci_main_menu.Section(), config) return uci_main_menu.UCIMainMenu() end,
-    ["6"] = function() local option, value = uci_main_menu.OptionInput(uci_main_menu.Option())
+    ["6"] = function() local option, value = uci_main_menu.OptionType()
     uci_print.SetValueForOptions(config, uci_main_menu.Section(), option, value) return uci_main_menu.UCIMainMenu() end,
     ["7"] = function() uci_print.DeleteOptions(config, uci_main_menu.Section(), uci_main_menu.Option()) return uci_main_menu.UCIMainMenu() end,
     ["8"] = function() local status, value = pcall(x.commit, config)
