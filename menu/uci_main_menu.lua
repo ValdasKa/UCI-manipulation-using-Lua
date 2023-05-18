@@ -108,7 +108,7 @@ function handleInput(options)
      end 
      if options[line] == nil then
       print("Not existing value " .. line .. " use from above listed")
-      os.exit()
+      uci_main_menu.UCIMainMenu()
      end
   return options[line]()
 end

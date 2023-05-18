@@ -27,7 +27,7 @@ local function handleInputt(options)
      end 
      if options[line] == nil then
       print("Not existing value " .. line .. " use from above listed")
-      os.exit()
+      main_menu.MainMenu()
      end
   return options[line]()
 end
